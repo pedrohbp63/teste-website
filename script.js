@@ -1,108 +1,47 @@
-const display = document.getElementById('display');
-const buttons = document.getElementById('buttons');
+document.addEventListener('DOMContentLoaded', function() {
+    const products = [
+        { id: 1, name: 'Delicious Burger', description: 'Juicy beef patty with fresh vegetables.', price: 8.99, image: 'burger.jpg' },
+        { id: 2, name: 'Crispy Fries', description: 'Golden crispy potato fries.', price: 3.49, image: 'fries.jpg' },
+        { id: 3, name: 'Refreshing Drink', description: 'Chilled soft drink.', price: 1.99, image: 'drink.jpg' },
+        { id: 4, name: 'Cheesy Pizza', description: 'Hot and cheesy pizza with your favorite toppings.', price: 12.99, image: 'pizza.jpg' }
+    ];
 
-let currentInput = '';
-let operator = null;
-let previousInput = null;
+    const productsSection = document.getElementById('products');
+    const productList = document.createElement('div');
+    productList.className = 'product-list';
 
-buttons.addEventListener('click', (event) => {
-  const target = event.target;
-  const value = target.textContent;
+    let cartItemCount = 0;
+    const cartStatus = document.getElementById('cart-status');
 
-  if (target.classList.contains('digit')) {
-    if (display.textContent === 'Error') {
-      currentInput = value;
-    } else {
-      currentInput += value;
-    }
-    updateDisplay(currentInput);
-  } else if (target.classList.contains('operator')) {
-    if (display.textContent === 'Error') {
-      clearCalculator(); // Resets display to '0', currentInput to '', etc.
-      // If the operator pressed was '-', allow it to start a negative number
-      // This re-uses the existing logic for starting with '-'
-      if (value === '-') {
-        currentInput = '-'; // Set currentInput to '-'
-        updateDisplay(currentInput); // Update display to show '-'
-      }
-      return; // Stop further processing of this operator click for the error state
-    }
-    if (currentInput === '' && value === '-') {
-      currentInput = '-';
-      updateDisplay(currentInput);
-      return;
-    }
-    if (currentInput === '' && value !== '-') return; // Return if currentInput is empty and not a '-' sign
+    products.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.className = 'product-item';
+        productItem.innerHTML = `
+            <img src="images/${product.image}" alt="${product.name}" style="width:100px; height:100px; object-fit: cover;">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p><strong>Price: $${product.price.toFixed(2)}</strong></p>
+            <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+        `;
+        productList.appendChild(productItem);
+    });
 
-    // If there's a pending operation and currentInput is not empty, calculate.
-    if (operator !== null && previousInput !== null && currentInput !== '') {
-      calculate();
-      // currentInput now holds the result. This will become previousInput.
-    }
-    // If previousInput is null and currentInput is not empty, this is the first number.
-    // Or, if a calculation just happened, currentInput has the result.
-    operator = value;
-    previousInput = currentInput; // The current number (or result) becomes previousInput
-    currentInput = ''; // Clear currentInput for the next number
-  } else if (target.id === 'equals') {
-    if (operator === null || previousInput === null || currentInput === '') return;
-    calculate();
-    operator = null;
-  } else if (target.id === 'clear') {
-    clearCalculator();
-  } else if (target.id === 'decimal') {
-    if (!currentInput.includes('.')) {
-      currentInput += '.';
-      updateDisplay(currentInput);
-    }
-  }
+    productsSection.innerHTML = '<h2>Our Menu</h2>';
+    productsSection.appendChild(productList);
+
+    // Add to cart functionality
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            cartItemCount++;
+            cartStatus.textContent = `Cart (${cartItemCount})`;
+            // Optional: Add some visual feedback, like changing button text
+            this.textContent = 'Added!';
+            this.disabled = true;
+            setTimeout(() => {
+                this.textContent = 'Add to Cart';
+                this.disabled = false;
+            }, 1000); // Reset button after 1 second
+        });
+    });
 });
-
-function updateDisplay(value) {
-  display.textContent = value;
-}
-
-function clearCalculator() {
-  currentInput = '';
-  operator = null;
-  previousInput = null;
-  updateDisplay('0');
-}
-
-function calculate() {
-  let result;
-  const prev = parseFloat(previousInput);
-  const current = parseFloat(currentInput);
-
-  if (isNaN(prev) || isNaN(current)) return;
-
-  switch (operator) {
-    case '+':
-      result = prev + current;
-      break;
-    case '-':
-      result = prev - current;
-      break;
-    case '*':
-      result = prev * current;
-      break;
-    case '/':
-      if (current === 0) {
-        updateDisplay('Error');
-        currentInput = '';
-        previousInput = null;
-        operator = null;
-        return;
-      }
-      result = prev / current;
-      break;
-    default:
-      return;
-  }
-  currentInput = result.toString();
-  previousInput = null;
-  updateDisplay(currentInput);
-}
-
-// Initialize display
-updateDisplay('0');
