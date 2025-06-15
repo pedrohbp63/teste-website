@@ -1,0 +1,99 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #E6E6FA; /* Lavender */
+  font-family: 'Nunito', sans-serif;
+}
+
+#calculator {
+  border: 1px solid #FFC0CB; /* Light Pink border */
+  border-radius: 15px; /* Softer, more rounded look */
+  box-shadow: 0 0 10px rgba(255, 182, 193, 0.3); /* Softer, pastel shadow (LightPink with alpha) */
+  display: flex;
+  flex-direction: column;
+  width: 320px; /* Slightly wider to accommodate rounded buttons */
+  background-color: #FFDDF4; /* Light Pink */
+}
+
+#display {
+  background-color: #F0FFF0; /* Honeydew */
+  color: #5A5A5A; /* Dark Grey for readability */
+  font-size: 2.2em; /* Slightly larger font */
+  padding: 15px;
+  text-align: right;
+  height: 70px;
+  border-top-left-radius: 15px; /* Match calculator's border-radius */
+  border-top-right-radius: 15px; /* Match calculator's border-radius */
+  border-bottom: 1px solid #FFC0CB; /* Light Pink border */
+  font-weight: 700; /* Bolder display font */
+}
+
+#buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px; /* Increased gap for a softer look */
+  padding: 10px; /* Padding around buttons */
+}
+
+button {
+  background-color: #D4F1F4; /* Light Blue for digit buttons */
+  color: #483D8B; /* DarkSlateBlue for text */
+  border: none;
+  border-radius: 10px; /* Rounded buttons */
+  padding: 20px;
+  font-size: 1.6em; /* Slightly larger font */
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  transition: background-color 0.2s ease, transform 0.1s ease; /* Smooth transitions */
+}
+
+button:hover {
+  background-color: #C0E5EA; /* Slightly darker Light Blue */
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+button:active {
+  background-color: #ADD8E6; /* Even darker Light Blue */
+  transform: scale(1); /* Reset zoom on active */
+}
+
+.operator {
+  background-color: #AFEEEE; /* Pale Turquoise */
+}
+
+.operator:hover {
+  background-color: #9EDDDD; /* Darker Pale Turquoise */
+}
+
+.operator:active {
+  background-color: #8CDADA; /* Even darker Pale Turquoise */
+}
+
+#equals {
+  grid-column: span 2;
+  background-color: #98FB98; /* Pale Green */
+}
+
+#equals:hover {
+  background-color: #88EE88; /* Darker Pale Green */
+}
+
+#equals:active {
+  background-color: #77DD77; /* Even darker Pale Green */
+}
+
+#clear {
+  background-color: #FFB6C1; /* LightPink (more saturated) */
+}
+
+#clear:hover {
+  background-color: #FFAAB5; /* Darker LightPink */
+}
+
+#clear:active {
+  background-color: #FF9FAA; /* Even darker LightPink */
+}
